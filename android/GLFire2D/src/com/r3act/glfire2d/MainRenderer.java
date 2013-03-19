@@ -13,6 +13,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.os.SystemClock;
 import android.util.Log;
 
 public class MainRenderer implements GLSurfaceView.Renderer {
@@ -47,6 +48,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 		
 		GLES20.glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
 		GLES20.glClear( GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT );
+		
 		render( flame );
 		
 	}
@@ -56,14 +58,15 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 	{		
 		GLES20.glViewport( 0, 0, width, height );
 		float ratio = ( float ) width / height;
-		Matrix.frustumM( pMatrix, 0, -ratio, ratio, -1, 1, 1, 150 );
+//		Matrix.frustumM( pMatrix, 0, -ratio, ratio, -1, 1, 1, 150 );
+		Matrix.perspectiveM( pMatrix, 0, 45, ratio, 1, 100);
 	}
 
 	@Override
 	public void onSurfaceCreated( GL10 unused, EGLConfig config ) {
 		
 		GLES20.glDisable( GLES20.GL_CULL_FACE );
-		GLES20.glDisable( GLES20.GL_DEPTH_TEST );
+		GLES20.glEnable( GLES20.GL_DEPTH_TEST );
 		
 		Matrix.setLookAtM( vMatrix, 0,
 				0.0f, 0.0f, -10.0f,
@@ -90,6 +93,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 		if ( pMatrixId != -1 )
 		{
 			GLES20.glUniformMatrix4fv( pMatrixId, 1, false, pMatrix, 0 );
+			ErrorUtils.check( ":Link uniform 'projection matrix'" );
 		}		
 		
 		vMatrixId = GLES20.glGetUniformLocation( currentProgram, "viewMatrix" );
@@ -138,6 +142,7 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 		ShortBuffer fBuffer = object.getFacesBuffer();
 		fBuffer.position( 0 );
 		
+//		GLES20.glDrawArrays( GLES20.GL_TRIANGLE_STRIP, 0, 4 );
 		GLES20.glDrawElements( GLES20.GL_TRIANGLES,	object.getFacesLength(), GLES20.GL_UNSIGNED_SHORT, fBuffer );
 		ErrorUtils.check( "Draw Elements" );		
 		

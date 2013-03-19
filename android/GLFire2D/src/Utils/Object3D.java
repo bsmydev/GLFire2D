@@ -76,6 +76,6 @@ public class Object3D {
 	
 	public int getFacesLength()
 	{
-		return faces.length / 3;
+		return faces.length;
 	}
 }

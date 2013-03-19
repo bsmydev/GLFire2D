@@ -23,13 +23,13 @@ public class ShaderProgram {
 
         int program = GLES20.glCreateProgram();
         
-        if ( program != 0 ) {
-        	
+        if ( program != 0 )
+        {
             GLES20.glAttachShader( program, vertexShader );
-            ErrorUtils.check( "glAttachShader" );
+            ErrorUtils.check( "glAttachShader 'vertexShader'" );
             
             GLES20.glAttachShader( program, fragmentShader );
-            ErrorUtils.check( "glAttachShader" );
+            ErrorUtils.check( "glAttachShader 'fragmentShader'" );
             
             GLES20.glLinkProgram( program );
             int[] linkStatus = new int[1];

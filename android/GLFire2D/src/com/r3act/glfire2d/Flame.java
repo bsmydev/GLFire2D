@@ -43,12 +43,14 @@ public class Flame extends Object3D{
 	
 	private static String vShader = "\n" +  
 		
+		"precision mediump float;\n" +	
+		
 		"uniform mat4 projectionMatrix; \n" +
 		"uniform mat4 viewMatrix; \n" +
 		"uniform mat4 modelMatrix; \n" +
 		
 		"attribute vec3 position; \n" +
-		"attribute vec2 uv; \n" +
+		/*"attribute vec2 uv; \n" +*/
 		
 		/*"varying vec2 vUv;\n" +*/ 
 
@@ -60,7 +62,9 @@ public class Flame extends Object3D{
 		"} \n";
 	
 	private static String fShader = "\n" +  
-	
+		
+		"precision mediump float;\n" +
+		
 		"void main() { \n" +
 		
 			"gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ); \n" +
