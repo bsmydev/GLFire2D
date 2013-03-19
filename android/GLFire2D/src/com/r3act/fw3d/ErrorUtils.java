@@ -1,4 +1,4 @@
-package Utils;
+package com.r3act.fw3d;
 
 import android.opengl.GLES20;
 import android.util.Log;

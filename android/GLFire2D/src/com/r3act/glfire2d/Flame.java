@@ -1,9 +1,14 @@
 package com.r3act.glfire2d;
 
-import Utils.Object3D;
-import Utils.ShaderProgram;
+import android.opengl.GLES20;
 
-public class Flame extends Object3D{
+import com.r3act.fw3d.Object3D;
+import com.r3act.fw3d.ShaderProgram;
+import com.r3act.fw3d.Texture;
+import com.r3act.fw3d.Uniform;
+
+public class Flame extends Object3D
+{
 	
 	public Flame()
 	{	
@@ -36,6 +41,14 @@ public class Flame extends Object3D{
 				
 		};
 		
+		textures.add( new Texture( R.raw.tex_noise_1x1, "texNoise1x1" ) );
+		textures.add( new Texture( R.raw.tex_noise_2x2, "texNoise2x2" ) );
+		textures.add( new Texture( R.raw.tex_noise_3x3, "texNoise3x3" ) );
+		textures.add( new Texture( R.raw.tex_fire, "texFire" ) );
+		textures.add( new Texture( R.raw.tex_alpha, "texAlpha" ) );
+		
+		uniforms.add( new Uniform( GLES20.GL_FLOAT, "time", 0.01f ) );
+		
 		init();
 	}
 	
@@ -50,80 +63,94 @@ public class Flame extends Object3D{
 		"uniform mat4 modelMatrix; \n" +
 		
 		"attribute vec3 position; \n" +
-		/*"attribute vec2 uv; \n" +*/
+		"attribute vec2 uv; \n" +
 		
-		/*"varying vec2 vUv;\n" +*/ 
+		"varying vec2 vUv;\n" + 
 
 		"void main() { \n" +
 
-			/*"vUv = uv; \n" +*/
+			"vUv = uv; \n" +
 			"gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 ); \n" +
 
 		"} \n";
 	
-	private static String fShader = "\n" +  
-		
-		"precision mediump float;\n" +
-		
-		"void main() { \n" +
-		
-			"gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0 ); \n" +
-		
-		"} \n";
-	
 //	private static String fShader = "\n" +  
+//		
+//		"precision mediump float;\n" +
+//		
+//		"varying vec2 vUv;\n" +
+//		
+//		"uniform float time; \n" +
+//		
+//		"uniform sampler2D texNoise1x1; \n" +
+//		"uniform sampler2D texNoise2x2; \n" +
+//		
+//		"void main() { \n" +
+//		
+//			/* Scroll the textures upwards */
+//			"float y = vUv.y + 1.0 - fract( time ); \n" +
+//			"vec2 scrollcoord = vec2( vUv.x, y ); \n" +
+//			"vec4 noise1 = texture2D( texNoise1x1, scrollcoord ); \n" +
 //			
-//	"uniform sampler2D texNoise1x1; \n" +
-//	"uniform sampler2D texNoise2x2; \n" +
-//	"uniform sampler2D texNoise3x3; \n" +
-//	"uniform sampler2D texFire; \n" +
-//	"uniform sampler2D texAlpha; \n" +
-//
-//	"uniform float time; \n" +
-//
-//	"varying vec2 vUv; \n" +
-//
-//	"void main() { \n" +
-//
-//		/* Scroll the textures upwards */
-//		"float y = vUv.y + 1.0 - fract( time ); \n" +
-//		"vec2 scrollcoord = vec2( vUv.x, y ); \n" +
-//		"vec4 noise1 = texture2D( texNoise1x1, scrollcoord ); \n" +
-//
-//		"y = vUv.y + 1.0 - fract( time * 1.3 ); \n" +
-//		"scrollcoord = vec2( vUv.x, y ); \n" +
-//		"vec4 noise2 = texture2D( texNoise2x2, scrollcoord ); \n" +
-//
-//		"y = vUv.y + 1.0 - fract( time * 2.3 ); \n" +
-//		"scrollcoord = vec2( vUv.x, y ); \n" +
-//		"vec4 noise3 = texture2D( texNoise3x3, scrollcoord ); \n" +
-//
-//		/* Move range of color to -1 / +1 */
-//		"noise1.xyz = noise1.xyz * 2.0 - 1.0; \n" +
-//		"noise2.xyz = noise2.xyz * 2.0 - 1.0; \n" +
-//		"noise3.xyz = noise3.xyz * 2.0 - 1.0; \n" +
-//
-//		/* Distort color */
-//		"vec2 distortion = vec2( 0.1, 0.2 ); \n" +
-//		"noise1.xy = noise1.xy * distortion.xy; \n" +
-//		"distortion = vec2( 0.1, 0.3 ); \n" +
-//		"noise2.xy = noise2.xy * distortion.xy; \n" +
-//		"distortion = vec2( 0.1, 0.1 ); \n" +
-//		"noise3.xy = noise3.xy * distortion.xy; \n" +
-//
-//		/* Get final noise */
-//		"vec4 noise = noise1 + noise2 + noise3; \n" +
-//
-//		/* Perturb the final noise */
-//		"float perturbation = ( ( vUv.y ) * 0.8 ) + 0.5; \n" +
-//		"noise.xy = ( noise.xy * perturbation ) + vUv.xy; \n" +
-//
-//		/* Get color from noise and fire texture */
-//		"vec4 color = texture2D( texFire, noise.xy ); \n" +
-//		"color.a = texture2D( texAlpha, noise.xy ).x ; \n" +
-//
-//		"gl_FragColor = color; \n" +
-//
-//	"}";
+//			"vec4 noise2 = texture2D( texNoise2x2, vUv ); \n" +
+//			
+//			"gl_FragColor = noise1 + noise2; \n" +
+//		
+//		"} \n";
+	
+	private static String fShader = "\n" +  
+			
+	"uniform sampler2D texNoise1x1; \n" +
+	"uniform sampler2D texNoise2x2; \n" +
+	"uniform sampler2D texNoise3x3; \n" +
+	"uniform sampler2D texFire; \n" +
+	"uniform sampler2D texAlpha; \n" +
+
+	"uniform float time; \n" +
+
+	"varying vec2 vUv; \n" +
+
+	"void main() { \n" +
+
+		/* Scroll the textures upwards */
+		"float y = vUv.y + 1.0 - fract( time ); \n" +
+		"vec2 scrollcoord = vec2( vUv.x, y ); \n" +
+		"vec4 noise1 = texture2D( texNoise1x1, scrollcoord ); \n" +
+
+		"y = vUv.y + 1.0 - fract( time * 1.3 ); \n" +
+		"scrollcoord = vec2( vUv.x, y ); \n" +
+		"vec4 noise2 = texture2D( texNoise2x2, scrollcoord ); \n" +
+
+		"y = vUv.y + 1.0 - fract( time * 2.3 ); \n" +
+		"scrollcoord = vec2( vUv.x, y ); \n" +
+		"vec4 noise3 = texture2D( texNoise3x3, scrollcoord ); \n" +
+
+		/* Move range of color to -1 / +1 */
+		"noise1.xyz = noise1.xyz * 2.0 - 1.0; \n" +
+		"noise2.xyz = noise2.xyz * 2.0 - 1.0; \n" +
+		"noise3.xyz = noise3.xyz * 2.0 - 1.0; \n" +
+
+		/* Distort color */
+		"vec2 distortion = vec2( 0.1, 0.2 ); \n" +
+		"noise1.xy = noise1.xy * distortion.xy; \n" +
+		"distortion = vec2( 0.1, 0.3 ); \n" +
+		"noise2.xy = noise2.xy * distortion.xy; \n" +
+		"distortion = vec2( 0.1, 0.1 ); \n" +
+		"noise3.xy = noise3.xy * distortion.xy; \n" +
+
+		/* Get final noise */
+		"vec4 noise = noise1 + noise2 + noise3; \n" +
+
+		/* Perturb the final noise */
+		"float perturbation = ( ( vUv.y ) * 0.8 ) + 0.5; \n" +
+		"noise.xy = ( noise.xy * perturbation ) + vUv.xy; \n" +
+
+		/* Get color from noise and fire texture */
+		"vec4 color = texture2D( texFire, noise.xy ); \n" +
+		"color.a = texture2D( texAlpha, noise.xy ).x ; \n" +
+
+		"gl_FragColor = color; \n" +
+
+	"}";
 	
 }

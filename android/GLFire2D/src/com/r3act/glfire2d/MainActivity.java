@@ -13,7 +13,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle icicle) {
     	
         super.onCreate(icicle);
-        mView = new MainGLSurfaceView( getApplication() );
+        mView = new MainGLSurfaceView( getApplicationContext() );
         setContentView( mView );
         
     }

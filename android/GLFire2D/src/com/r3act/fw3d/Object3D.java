@@ -1,13 +1,15 @@
-package Utils;
+package com.r3act.fw3d;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Object3D {
 
-	private static final int SHORT_SIZE_BYTES = 4;
+	private static final int SHORT_SIZE_BYTES = 2;
 	private static final int FLOAT_SIZE_BYTES = 4;
 	
 	private static String vShader = null;
@@ -22,6 +24,10 @@ public class Object3D {
 	protected short[] faces = null;
 	protected ShortBuffer facesBuffer = null;
 	
+	protected ArrayList<Texture> textures = null;
+	
+	protected ArrayList<Uniform> uniforms = null;
+	
 	protected int program;
 	
 	public Object3D()
@@ -32,6 +38,10 @@ public class Object3D {
 		vertices = new float[]{};
 		uvs = new float[]{};
 		faces = new short[]{};
+		
+		textures = new ArrayList<Texture>();
+
+		uniforms = new ArrayList<Uniform>();
 		
 		init();
 	}
