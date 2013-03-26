@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+    <!-- External -->
+	<script src="three.js"></script>
+
+    <script src="flame.js"></script>
+
+
+	<script>    
+
+window.onload = function()
+{
+    new Fire();    
+};
+
+Fire = function()
+{
+    var i = 0,
+        object = null,
+        nbFlames = 6;
+
+    this.scene = new THREE.Scene();
+
+    this.flames = [];
+
+    for ( ; i < nbFlames; i++ )
+    {
+        object = new Flame();
+        object.rotation.y = i * ( Math.PI / nbFlames );
+        this.flames.push( object );
+        this.scene.add( object );
+    }
+
+    this.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+    this.camera.lookAt( new THREE.Vector3( 0, 0, 1 ) );
+    this.camera.up = new THREE.Vector3( 0, 1, 0 );
+    this.camera.position = new THREE.Vector3( 0, 0, -100 );
+    this.camera.rMatrix = ( new THREE.Matrix4() ).makeRotationAxis( new THREE.Vector3( 0, 1, 0 ), Math.PI / 180 );
+
+    this.scene.add( this.camera );
+
+    this.renderer = new THREE.WebGLRenderer( {
+
+        canvas : document.getElementById( "canvas" ),
+        clearColor : 0x000000,
+        clearAlpha: 1,
+        antialias : true 
+    
+    } );
+    this.renderer.setSize( window.innerWidth, window.innerHeight );
+
+    this.animate();
+};
+
+Fire.prototype.animate = function() {
+    
+    var self = this,
+        i = 0;
+
+    for ( ; i < this.flames.length; i++ )
+    {
+        this.flames[ i ].animate();
+    }
+
+    this.camera.position.applyMatrix4( this.camera.rMatrix );
+    this.camera.lookAt( new THREE.Vector3( 0, 0, 1 ) );
+
+    this.renderer.setDepthTest( false );
+    this.renderer.render( this.scene, this.camera );
+
+    requestAnimationFrame( function(){ self.animate.call( self ); } );
+
+};
+
+    </script>
+
+</head>
+    
+<body style="margin : 0px;">
+
+    <canvas id="canvas"></canvas>
+
+</body>
+
+</html>
