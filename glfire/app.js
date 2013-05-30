@@ -40,15 +40,35 @@ GLFire.App = ( function(){
 				
 
 	    /* Setup renderer */
-	    renderer = new THREE.WebGLRenderer( {
+	    ( function(){
 
-	        canvas : document.getElementById( "canvas" ),
-	        clearColor : 0x000000,
-	        clearAlpha: 1,
-	        antialias : true 
+	    	var container = document.getElementById( "canvas_container" ),
+	    		canvas = document.getElementById( "canvas" ),
+
+	    		resize = function(){
+
+	    			var width = container.offsetWidth,
+	    				height = width * 9 / 16;
+
+	    			renderer.setSize( width, height );
+	    			camera.aspect = width / height;
+					camera.updateProjectionMatrix();
+	    		};
 	    
-	    } );
-	    renderer.setSize( window.innerWidth, window.innerHeight );
+		    renderer = new THREE.WebGLRenderer( {
+
+		        canvas : canvas,
+		        clearColor : 0x000000,
+		        clearAlpha: 1,
+		        antialias : true 
+		    
+		    } );
+
+		    resize();
+
+		    window.onresize = resize;
+
+	    } )();
 
 	    animate();	    
 
