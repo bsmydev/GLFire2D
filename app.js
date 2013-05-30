@@ -40,15 +40,35 @@ GLFire.App = ( function(){
 				
 
 	    /* Setup renderer */
-	    renderer = new THREE.WebGLRenderer( {
+	    ( function(){
 
-	        canvas : document.getElementById( "canvas" ),
-	        clearColor : 0x000000,
-	        clearAlpha: 1,
-	        antialias : true 
+	    	var container = document.getElementById( "container" ),
+	    		canvas = document.getElementById( "canvas" ),
+
+	    		resize = function(){
+
+	    			var width = container.offsetWidth,
+	    				height = container.offsetHeight;
+	    				
+	    			renderer.setSize( width, height );
+	    			camera.aspect = width / height;
+					camera.updateProjectionMatrix();
+	    		};
 	    
-	    } );
-	    renderer.setSize( window.innerWidth, window.innerHeight );
+		    renderer = new THREE.WebGLRenderer( {
+
+		        canvas : canvas,
+		        clearColor : 0x000000,
+		        clearAlpha: 1,
+		        antialias : true 
+		    
+		    } );
+
+		    resize();
+
+		    window.onresize = resize;
+
+	    } )();
 
 	    animate();	    
 
@@ -73,6 +93,7 @@ GLFire.App = ( function(){
 	render = function(){
 
 		renderer.setDepthTest( false );
+		//renderer.setViewport( 0, 0, window.innerWidth, window.innerHeight );
     	renderer.render( scene, camera );
 
     	requestAnimationFrame( animate );
