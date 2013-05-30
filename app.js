@@ -49,7 +49,7 @@ GLFire.App = ( function(){
 
 	    			var width = container.offsetWidth,
 	    				height = container.offsetHeight;
-	    				
+
 	    			renderer.setSize( width, height );
 	    			camera.aspect = width / height;
 					camera.updateProjectionMatrix();
@@ -93,7 +93,6 @@ GLFire.App = ( function(){
 	render = function(){
 
 		renderer.setDepthTest( false );
-		//renderer.setViewport( 0, 0, window.innerWidth, window.innerHeight );
     	renderer.render( scene, camera );
 
     	requestAnimationFrame( animate );
