@@ -1,4 +1,4 @@
-Flame = function()
+GLFire.Flame = function()
 {
 	var geometry = new THREE.PlaneGeometry( 50, 50 ),
 		texNoise1x1 = THREE.ImageUtils.loadTexture( "tex_noise_1x1.gif" ),
@@ -46,17 +46,17 @@ Flame = function()
 };
 
 
-Flame.prototype = new THREE.Mesh();
+GLFire.Flame.prototype = new THREE.Mesh();
 
 
-Flame.prototype.animate = function()
+GLFire.Flame.prototype.animate = function()
 {
 	this.material.uniforms.time.value += 0.01;
 	this.material.uniforms.time.needsUpdate = true;
 };
 
 
-Flame.prototype.vertexShader = [
+GLFire.Flame.prototype.vertexShader = [
 
 	"varying vec2 vUv;",
 
@@ -70,7 +70,7 @@ Flame.prototype.vertexShader = [
 ].join( "\n" );
 
 
-Flame.prototype.fragmentShader = [
+GLFire.Flame.prototype.fragmentShader = [
 
 	"uniform sampler2D texNoise1x1;",
 	"uniform sampler2D texNoise2x2;",
