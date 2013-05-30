@@ -16,6 +16,8 @@ public class MainRenderer implements GLSurfaceView.Renderer {
 	public MainRenderer( Context context )
 	{
 		renderer = new GLRenderer( context );
+		
+		
 	}
 	
 	@Override
