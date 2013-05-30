@@ -1,28 +1,23 @@
 GLFire.Flame = function()
 {
 	var geometry = new THREE.PlaneGeometry( 50, 50 ),
-		texNoise1x1 = THREE.ImageUtils.loadTexture( "tex_noise_1x1.gif" ),
-		texNoise2x2 = THREE.ImageUtils.loadTexture( "tex_noise_2x2.gif" ),
-		texNoise3x3 = THREE.ImageUtils.loadTexture( "tex_noise_3x3.gif" ),
-		texFire = THREE.ImageUtils.loadTexture( "tex_fire.gif" ),
-		texAlpha = THREE.ImageUtils.loadTexture( "tex_alpha.gif" ),
 		material = null;
 
-	texNoise1x1.wrapS = texNoise1x1.wrapT = THREE.RepeatWrapping;
-	texNoise2x2.wrapS = texNoise2x2.wrapT = THREE.RepeatWrapping;
-	texNoise3x3.wrapS = texNoise3x3.wrapT = THREE.RepeatWrapping;
+	this.texNoise1x1.wrapS = this.texNoise1x1.wrapT = THREE.RepeatWrapping;
+	this.texNoise2x2.wrapS = this.texNoise2x2.wrapT = THREE.RepeatWrapping;
+	this.texNoise3x3.wrapS = this.texNoise3x3.wrapT = THREE.RepeatWrapping;
 
-	texFire.wrapS = texFire.wrapT = THREE.RepeatWrapping;
+	this.texFire.wrapS = this.texFire.wrapT = THREE.RepeatWrapping;
 	
 	material = new THREE.ShaderMaterial( {
 
 		uniforms : {
 
-			texNoise1x1 : { type : "t", value : texNoise1x1 },
-			texNoise2x2 : { type : "t", value : texNoise2x2 },
-			texNoise3x3 : { type : "t", value : texNoise3x3 },
-			texFire : { type : "t", value : texFire },
-			texAlpha : { type : "t", value : texAlpha },
+			texNoise1x1 : { type : "t", value : this.texNoise1x1 },
+			texNoise2x2 : { type : "t", value : this.texNoise2x2 },
+			texNoise3x3 : { type : "t", value : this.texNoise3x3 },
+			texFire : { type : "t", value : this.texFire },
+			texAlpha : { type : "t", value : this.texAlpha },
 			//scrollSpeed : { type : "f", value : 0.3 },
 			time : { type : "f", value : 1.0 }
 
@@ -127,3 +122,9 @@ GLFire.Flame.prototype.fragmentShader = [
 	"}"
 
 ].join( "\n" );
+
+GLFire.Flame.prototype.texNoise1x1 = THREE.ImageUtils.loadTexture( "tex_noise_1x1.gif" );
+GLFire.Flame.prototype.texNoise2x2 = THREE.ImageUtils.loadTexture( "tex_noise_2x2.gif" );
+GLFire.Flame.prototype.texNoise3x3 = THREE.ImageUtils.loadTexture( "tex_noise_3x3.gif" );
+GLFire.Flame.prototype.texFire = THREE.ImageUtils.loadTexture( "tex_fire.gif" );
+GLFire.Flame.prototype.texAlpha = THREE.ImageUtils.loadTexture( "tex_alpha.gif" );
